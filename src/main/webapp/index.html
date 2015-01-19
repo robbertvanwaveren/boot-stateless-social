@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="statelessApp">
+<head lang="en">
+	<title>Stateless Authentication Example</title>
+	<script src="resources/js/angular.js" type="application/javascript"></script>	
+	<script src="resources/js/angular-cookies.js" type="application/javascript"></script>
+	<script src="resources/js/controllers.js" type="application/javascript"></script>
+</head>
+<body ng-controller="AuthCtrl" ng-init="init()" style="padding: 10% 20%">
+	<div ng-hide="authenticated">
+		<a href="/auth/facebook"><button>Login with Facebook</button></a>
+	</div>
+	<div ng-show="authenticated">
+		Logged in as {{username}} <button ng-click="logout()">Logout</button><br><br>
+		Token content: <pre>{{token | json}}</pre>
+	</div>
+	<div ng-show="authenticated">
+		<button ng-click="getSocialDetails()">Get Social Details</button>
+		<pre>{{socialDetails | json}}</pre>
+	</div>
+</body>
+</html>
