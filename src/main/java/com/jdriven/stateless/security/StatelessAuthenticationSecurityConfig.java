@@ -162,6 +162,15 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			.apply(socialConfigurer.userIdSource(userIdSource));
 	}
 
+	/*
+	 * The reason of this function is to put @Bean on the default authenticationManager
+	 * created by the parent.
+	 * In order to put userService into AuthenticationManager, you need to call
+	 * configure of this class. "configure" is called by authenticationManagerBean
+	 * the parent class. However this authentication manager will not be autowired because it is not
+	 * exposed as a bean. You can only Autowire a spring managed bean.
+	 * If its not exposed as a bean, you cannot Autowire it. 
+	 */
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
