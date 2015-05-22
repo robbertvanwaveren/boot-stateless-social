@@ -3,6 +3,7 @@ package com.jdriven.stateless.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,7 @@ import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 
 @Configuration
 @EnableSocial
+@PropertySource("classpath:social.properties")
 public class StatelessSocialConfig extends SocialConfigurerAdapter {
 
 	@Autowired
