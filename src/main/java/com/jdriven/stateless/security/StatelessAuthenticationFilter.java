@@ -14,6 +14,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+
+/*
+ * Authenticates every request based on the extra header token:
+ *  - get the user from the extra header token
+ *  - check that its hash is valid
+ *  - check that it is not expired
+ *  - create authorization object from the user
+ *  - set authorization object into the security context for this request
+ *  - let the rest of the system handle the request based on the authentication
+ */
 @Component
 public class StatelessAuthenticationFilter extends GenericFilterBean {
 
@@ -23,19 +33,8 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException {
-
-		setAuthenticationFromHeader((HttpServletRequest) request);
-
+		SecurityContextHolder.getContext().setAuthentication(
+                tokenAuthenticationService.getAuthentication((HttpServletRequest) request));
 		chain.doFilter(request, response);
-	}
-
-	private void setAuthenticationFromHeader(HttpServletRequest request) {
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof UserAuthentication)) {
-			final UserAuthentication userAuthentication = tokenAuthenticationService.getAuthentication(request);
-			if (userAuthentication != null) {
-				SecurityContextHolder.getContext().setAuthentication(userAuthentication);
-			}
-		}
 	}
 }
